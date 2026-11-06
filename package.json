@@ -1,0 +1,23 @@
+{
+  "name": "playwright-ai-qa-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HassanShehadehQA/playwright-ai-qa-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/HassanShehadehQA/playwright-ai-qa-lab/issues"
+  },
+  "homepage": "https://github.com/HassanShehadehQA/playwright-ai-qa-lab#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.65.0",
+    "@types/node": "^26.6.6"
+  }
+}
