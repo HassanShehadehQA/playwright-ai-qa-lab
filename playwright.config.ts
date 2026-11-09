@@ -25,10 +25,7 @@ export default defineConfig({
   expect: { timeout: 5_000 },
 
   /* Readable results in the terminal + an HTML report you open with `npm run report` */
-  reporter: [
-    ['list'],
-    ['html', { open: 'never' }],
-  ],
+  reporter: [['list'], ['html', { open: 'never' }]],
 
   /* Shared settings for every test */
   use: {
