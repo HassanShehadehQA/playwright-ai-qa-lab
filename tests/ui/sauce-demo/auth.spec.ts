@@ -13,7 +13,7 @@ test.describe('Authentication', () => {
     await page.goto('/');
   });
 
-  test('user can log in', { tag: '@smoke' }, async ({ page }) => {
+  test('user can log in with valid credentials', { tag: '@smoke' }, async ({ page }) => {
     await test.step('submit valid credentials', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
       await page.getByLabel('Password').fill(env.saucePassword);
