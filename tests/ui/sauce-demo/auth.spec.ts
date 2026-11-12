@@ -13,7 +13,7 @@ test.describe('Authentication', () => {
     await page.goto('/');
   });
 
-  test('user can login with valid credentials', { tag: '@smoke' }, async ({ page }) => {
+  test('user can log in with valid credentials', { tag: '@smoke' }, async ({ page }) => {
     await test.step('submit valid credentials', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
       await page.getByLabel('Password').fill(env.saucePassword);
@@ -115,7 +115,7 @@ test.describe('Authentication', () => {
         await page.getByRole('button', { name: 'Login' }).click();
       });
 
-      await test.step('empty username error is shown', async () => {
+      await test.step('only the username error is shown', async () => {
         await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
       });
 
