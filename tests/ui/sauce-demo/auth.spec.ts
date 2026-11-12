@@ -30,7 +30,7 @@ test.describe('Authentication', () => {
   test('login fails with an incorrect password', { tag: '@smoke' }, async ({ page }) => {
     await test.step('submit an incorrect password', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
-      await page.getByLabel('Password').fill(InvalidData.incorrectPassWord);
+      await page.getByLabel('Password').fill(InvalidData.incorrectPassword);
       await page.getByRole('button', { name: 'Login' }).click();
     });
 
@@ -75,7 +75,7 @@ test.describe('Authentication', () => {
   });
 
   test('empty password shows error', { tag: '@regression' }, async ({ page }) => {
-    await test.step('submit credentials with a empty password', async () => {
+    await test.step('an empty password', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
       await page.getByRole('button', { name: 'Login' }).click();
     });

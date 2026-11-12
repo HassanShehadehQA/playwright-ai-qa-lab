@@ -4,7 +4,7 @@ export const SauceUsers = {
 } as const;
 
 export const InvalidData = {
-  incorrectPassWord: 'IncorrectPw',
+  incorrectPassword: 'IncorrectPw',
 } as const;
 
 export const ErrorMsgs = {
