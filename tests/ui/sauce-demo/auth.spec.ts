@@ -107,17 +107,21 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('login fails with no credentials', { tag: '@regression' }, async ({ page }) => {
-    await test.step('submit no credentials', async () => {
-      await page.getByRole('button', { name: 'Login' }).click();
-    });
+  test(
+    'username error takes priority when both fields are empty',
+    { tag: '@regression' },
+    async ({ page }) => {
+      await test.step('submit no credentials', async () => {
+        await page.getByRole('button', { name: 'Login' }).click();
+      });
 
-    await test.step('empty username error is shown', async () => {
-      await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
-    });
+      await test.step('empty username error is shown', async () => {
+        await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
+      });
 
-    await test.step('login page is displayed', async () => {
-      await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
-    });
-  });
+      await test.step('login page is displayed', async () => {
+        await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+      });
+    },
+  );
 });
