@@ -7,5 +7,7 @@ export function requireEnv(name: string): string {
 }
 
 export const env = {
-  saucePassword: requireEnv('SAUCE_PASSWORD'),
+  get saucePassword(): string {
+    return requireEnv('SAUCE_PASSWORD');
+  },
 } as const;
