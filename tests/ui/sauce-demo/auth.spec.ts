@@ -13,7 +13,7 @@ test.describe('Authentication', () => {
     await page.goto('/');
   });
 
-  test('user can login with valid credentials', async ({ page }) => {
+  test('user can login with valid credentials', { tag: '@smoke' }, async ({ page }) => {
     await test.step('submit valid credentials', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
       await page.getByLabel('Password').fill(env.saucePassword);
@@ -27,10 +27,10 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('login fails with an incorrect password', async ({ page }) => {
+  test('login fails with an incorrect password', { tag: '@smoke' }, async ({ page }) => {
     await test.step('submit an incorrect password', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
-      await page.getByLabel('Password').fill(InvalidData.incorrectPassWord);
+      await page.getByLabel('Password').fill(InvalidData.incorrectPassword);
       await page.getByRole('button', { name: 'Login' }).click();
     });
 
@@ -43,7 +43,7 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('locked out user cannot log in', async ({ page }) => {
+  test('locked out user cannot log in', { tag: '@regression' }, async ({ page }) => {
     await test.step('submit a locked-out user credentials', async () => {
       await page.getByLabel('Username').fill(SauceUsers.lockedOut);
       await page.getByLabel('Password').fill(env.saucePassword);
@@ -59,7 +59,7 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('empty username shows error', async ({ page }) => {
+  test('empty username shows error', { tag: '@regression' }, async ({ page }) => {
     await test.step('submit credentials with empty Username', async () => {
       await page.getByLabel('Password').fill(env.saucePassword);
       await page.getByRole('button', { name: 'Login' }).click();
@@ -74,8 +74,8 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('empty password shows error', async ({ page }) => {
-    await test.step('submit credentials with a empty password', async () => {
+  test('empty password shows error', { tag: '@regression' }, async ({ page }) => {
+    await test.step('an empty password', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
       await page.getByRole('button', { name: 'Login' }).click();
     });
@@ -89,7 +89,7 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('user can log out and return to the login page', async ({ page }) => {
+  test('user can log out and return to login page', { tag: '@regression' }, async ({ page }) => {
     await test.step('submit valid credentials', async () => {
       await page.getByLabel('Username').fill(SauceUsers.standard);
       await page.getByLabel('Password').fill(env.saucePassword);
@@ -107,17 +107,21 @@ test.describe('Authentication', () => {
     });
   });
 
-  test('login fails with no credentials', async ({ page }) => {
-    await test.step('submit no credentials', async () => {
-      await page.getByRole('button', { name: 'Login' }).click();
-    });
+  test(
+    'username error takes priority when both fields are empty',
+    { tag: '@regression' },
+    async ({ page }) => {
+      await test.step('submit no credentials', async () => {
+        await page.getByRole('button', { name: 'Login' }).click();
+      });
 
-    await test.step('empty username error is shown', async () => {
-      await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
-    });
+      await test.step('empty username error is shown', async () => {
+        await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
+      });
 
-    await test.step('login page is displayed', async () => {
-      await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
-    });
-  });
+      await test.step('login page is displayed', async () => {
+        await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+      });
+    },
+  );
 });
