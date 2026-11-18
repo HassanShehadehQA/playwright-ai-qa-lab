@@ -17,11 +17,15 @@ export const ErrorMsgs = {
 export const TitlesHeaders = {
   mainTitle: 'Swag Labs',
   productHeader: 'Products',
+  checkoutInfoHeader: 'Checkout: Your Information',
+  cartHeader: 'Your Cart',
 } as const;
 
 export const SauceRoutes = {
   productsMainPage: /\/inventory\.html$/,
   loginPage: '/',
+  cartPage: /\/cart\.html$/,
+  checkoutInfoPage: /\/checkout-step-one\.html$/,
 } as const;
 
 export const SauceProducts = {
