@@ -18,6 +18,7 @@ export const TitlesHeaders = {
   mainTitle: 'Swag Labs',
   productHeader: 'Products',
   checkoutInfoHeader: 'Checkout: Your Information',
+  checkoutOverviewHeader: 'Checkout: Overview',
   cartHeader: 'Your Cart',
 } as const;
 
@@ -26,6 +27,7 @@ export const SauceRoutes = {
   loginPage: '/',
   cartPage: /\/cart\.html$/,
   checkoutInfoPage: /\/checkout-step-one\.html$/,
+  checkoutOverviewPage: /\/checkout-step-two\.html$/,
 } as const;
 
 export const SauceProducts = {
@@ -38,4 +40,10 @@ export const SauceSortOptions = {
   nameZToA: 'za',
   priceLowToHigh: 'lohi',
   priceHighToLow: 'hilo',
+} as const;
+
+export const SauceBackPackPriceSummary = {
+  itemTotal: 'Item total: $29.99',
+  tax: 'Tax: $2.40',
+  total: 'Total: $32.39',
 } as const;
