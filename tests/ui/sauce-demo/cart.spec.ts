@@ -52,8 +52,8 @@ test.describe('Cart', () => {
       });
 
       await test.step('open the cart', async () => {
-        // Cart icon is an <a> without href, so it has no link role; test id is the only stable hook.
-        await page.getByTestId('shopping-cart-link').click();
+        // The cart icon has role="button" and aria-label "Cart, empty" / "Cart, N items".
+        await page.getByRole('button', { name: /^Cart,/ }).click();
         await expect(page.getByTestId('inventory-item')).toHaveCount(2);
       });
 

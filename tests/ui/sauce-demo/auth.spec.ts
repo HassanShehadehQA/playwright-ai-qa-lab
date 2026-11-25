@@ -35,7 +35,7 @@ test.describe('Authentication', () => {
     });
 
     await test.step('credentials error shown', async () => {
-      await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.invalidUserPassword);
+      await expect(page.getByRole('alert')).toHaveText(ErrorMsgs.invalidUserPassword);
     });
 
     await test.step('login page is displayed', async () => {
@@ -51,7 +51,7 @@ test.describe('Authentication', () => {
     });
 
     await test.step('locked-out error is shown', async () => {
-      await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.userLockedOut);
+      await expect(page.getByRole('alert')).toHaveText(ErrorMsgs.userLockedOut);
     });
 
     await test.step('login page is displayed', async () => {
@@ -66,7 +66,7 @@ test.describe('Authentication', () => {
     });
 
     await test.step('empty user error is shown', async () => {
-      await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
+      await expect(page.getByRole('alert')).toHaveText(ErrorMsgs.usernameRequired);
     });
 
     await test.step('login page is displayed', async () => {
@@ -81,7 +81,7 @@ test.describe('Authentication', () => {
     });
 
     await test.step('empty password error is shown', async () => {
-      await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.passwordRequired);
+      await expect(page.getByRole('alert')).toHaveText(ErrorMsgs.passwordRequired);
     });
 
     await test.step('login page is displayed', async () => {
@@ -116,7 +116,7 @@ test.describe('Authentication', () => {
       });
 
       await test.step('only the username error is shown', async () => {
-        await expect(page.getByTestId('error')).toHaveText(ErrorMsgs.usernameRequired);
+        await expect(page.getByRole('alert')).toHaveText(ErrorMsgs.usernameRequired);
       });
 
       await test.step('login page is displayed', async () => {
