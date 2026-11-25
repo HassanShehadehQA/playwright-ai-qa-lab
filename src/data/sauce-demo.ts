@@ -1,6 +1,14 @@
 export const SauceUsers = {
   standard: 'standard_user',
   lockedOut: 'locked_out_user',
+  glitch: 'performance_glitch_user',
+  problem: 'problem_user',
+} as const;
+
+export const CheckoutCustomer = {
+  firstName: 'Testing',
+  lastName: 'Analyst',
+  postalCode: '11111',
 } as const;
 
 export const InvalidData = {
