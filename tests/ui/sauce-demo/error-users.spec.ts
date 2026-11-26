@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { env } from '../../../src/utils/env';
 import {
+  CartLink,
   CheckoutCustomer,
   SauceProducts,
   SauceRoutes,
@@ -82,7 +83,7 @@ test.describe('Problem users', () => {
           .filter({ hasText: SauceProducts.backpack })
           .getByRole('button', { name: 'Add to cart' })
           .click();
-        await page.getByTestId('shopping-cart-link').click();
+        await page.getByRole('button', { name: CartLink.anyCount }).click();
         await page.getByRole('button', { name: 'Checkout' }).click();
 
         await expect(page).toHaveURL(SauceRoutes.checkoutInfoPage);

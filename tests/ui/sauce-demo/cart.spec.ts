@@ -1,10 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
-import { SauceProducts, SauceRoutes, SauceUsers } from '../../../src/data/sauce-demo';
+import { CartLink, SauceProducts, SauceRoutes, SauceUsers } from '../../../src/data/sauce-demo';
 import { env } from '../../../src/utils/env';
 
 test.describe('Cart', () => {
   const productCard = (page: Page, name: string) =>
     page.getByTestId('inventory-item').filter({ hasText: name });
+
+  const cartLink = (page: Page) => page.getByRole('button', { name: CartLink.anyCount });
 
   test.beforeEach(async ({ page }) => {
     await page.goto(SauceRoutes.loginPage);
@@ -13,29 +15,33 @@ test.describe('Cart', () => {
     await page.getByRole('button', { name: 'Login' }).click();
   });
 
-  test('adding a product shows a cart badge of 1', { tag: '@smoke' }, async ({ page }) => {
-    await test.step('add a product and validate cart badge is 1', async () => {
+  test('adding a product updates the cart to 1 item', { tag: '@smoke' }, async ({ page }) => {
+    await test.step('add a product and the cart reports 1 item', async () => {
       await productCard(page, SauceProducts.backpack)
         .getByRole('button', { name: 'Add to cart' })
         .click();
 
-      await expect(page.getByTestId('shopping-cart-badge')).toHaveText('1');
+      await expect(cartLink(page)).toHaveAccessibleName(CartLink.oneItem);
     });
   });
 
-  test('adding two products shows a cart badge of 2', { tag: '@regression' }, async ({ page }) => {
-    await test.step('add the backpack and the bike light', async () => {
-      await productCard(page, SauceProducts.backpack)
-        .getByRole('button', { name: 'Add to cart' })
-        .click();
+  test(
+    'adding two products updates the cart to 2 items',
+    { tag: '@regression' },
+    async ({ page }) => {
+      await test.step('add the backpack and the bike light', async () => {
+        await productCard(page, SauceProducts.backpack)
+          .getByRole('button', { name: 'Add to cart' })
+          .click();
 
-      await productCard(page, SauceProducts.bikeLight)
-        .getByRole('button', { name: 'Add to cart' })
-        .click();
+        await productCard(page, SauceProducts.bikeLight)
+          .getByRole('button', { name: 'Add to cart' })
+          .click();
 
-      await expect(page.getByTestId('shopping-cart-badge')).toHaveText('2');
-    });
-  });
+        await expect(cartLink(page)).toHaveAccessibleName(CartLink.twoItems);
+      });
+    },
+  );
 
   test(
     'removing a product from the cart leaves only the other product',
@@ -48,12 +54,11 @@ test.describe('Cart', () => {
         await productCard(page, SauceProducts.bikeLight)
           .getByRole('button', { name: 'Add to cart' })
           .click();
-        await expect(page.getByTestId('shopping-cart-badge')).toHaveText('2');
+        await expect(cartLink(page)).toHaveAccessibleName(CartLink.twoItems);
       });
 
       await test.step('open the cart', async () => {
-        // The cart icon has role="button" and aria-label "Cart, empty" / "Cart, N items".
-        await page.getByRole('button', { name: /^Cart,/ }).click();
+        await cartLink(page).click();
         await expect(page.getByTestId('inventory-item')).toHaveCount(2);
       });
 
@@ -66,13 +71,13 @@ test.describe('Cart', () => {
       await test.step('only the bike light remains in the cart', async () => {
         await expect(page.getByTestId('inventory-item')).toHaveCount(1);
         await expect(productCard(page, SauceProducts.bikeLight)).toBeVisible();
-        await expect(page.getByTestId('shopping-cart-badge')).toHaveText('1');
+        await expect(cartLink(page)).toHaveAccessibleName(CartLink.oneItem);
       });
     },
   );
 
   test(
-    'removing the last product hides the cart badge',
+    'removing the last product leaves the cart empty',
     { tag: '@regression' },
     async ({ page }) => {
       await test.step('add the backpack', async () => {
@@ -80,7 +85,7 @@ test.describe('Cart', () => {
           .getByRole('button', { name: 'Add to cart' })
           .click();
 
-        await expect(page.getByTestId('shopping-cart-badge')).toHaveText('1');
+        await expect(cartLink(page)).toHaveAccessibleName(CartLink.oneItem);
       });
 
       await test.step('remove the backpack', async () => {
@@ -89,8 +94,8 @@ test.describe('Cart', () => {
           .click();
       });
 
-      await test.step('cart badge is hidden', async () => {
-        await expect(page.getByTestId('shopping-cart-badge')).toBeHidden();
+      await test.step('cart reports empty', async () => {
+        await expect(cartLink(page)).toHaveAccessibleName(CartLink.empty);
       });
     },
   );

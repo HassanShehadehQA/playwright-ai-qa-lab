@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import {
+  CartLink,
   SauceBackPackPriceSummary,
   SauceProducts,
   SauceRoutes,
@@ -11,6 +12,8 @@ import { env } from '../../../src/utils/env';
 test.describe('Checkout', () => {
   const productCard = (page: Page, name: string) =>
     page.getByTestId('inventory-item').filter({ hasText: name });
+
+  const cartLink = (page: Page) => page.getByRole('button', { name: CartLink.anyCount });
 
   const toCents = (label: string | null): number => {
     const amount = label?.split('$')[1];
@@ -34,16 +37,16 @@ test.describe('Checkout', () => {
   });
 
   test('checkout button opens the your information step', { tag: '@smoke' }, async ({ page }) => {
-    await test.step('add a product and validate cart badge is 1', async () => {
+    await test.step('add a product and the cart reports 1 item', async () => {
       await productCard(page, SauceProducts.backpack)
         .getByRole('button', { name: 'Add to cart' })
         .click();
 
-      await expect(page.getByTestId('shopping-cart-badge')).toHaveText('1');
+      await expect(cartLink(page)).toHaveAccessibleName(CartLink.oneItem);
     });
 
     await test.step('cart link opens the cart', async () => {
-      await page.getByTestId('shopping-cart-link').click();
+      await cartLink(page).click();
 
       await expect(page).toHaveURL(SauceRoutes.cartPage);
       await expect(page.getByTestId('title')).toHaveText(TitlesHeaders.cartHeader);
@@ -61,15 +64,15 @@ test.describe('Checkout', () => {
     'checkout overview total equals item total plus tax',
     { tag: '@regression' },
     async ({ page }) => {
-      await test.step('add the backpack and validate cart badge is 1', async () => {
+      await test.step('add the backpack and the cart reports 1 item', async () => {
         await productCard(page, SauceProducts.backpack)
           .getByRole('button', { name: 'Add to cart' })
           .click();
-        await expect(page.getByTestId('shopping-cart-badge')).toHaveText('1');
+        await expect(cartLink(page)).toHaveAccessibleName(CartLink.oneItem);
       });
 
       await test.step('cart link opens cart', async () => {
-        await page.getByTestId('shopping-cart-link').click();
+        await cartLink(page).click();
         await expect(page).toHaveURL(SauceRoutes.cartPage);
         await expect(page.getByTestId('title')).toHaveText(TitlesHeaders.cartHeader);
       });
