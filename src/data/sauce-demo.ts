@@ -11,6 +11,14 @@ export const CheckoutCustomer = {
   postalCode: '11111',
 } as const;
 
+// Accessible names of the header cart button ("1 items" is the app's own wording).
+export const CartLink = {
+  anyCount: /^Cart,/,
+  empty: 'Cart, empty',
+  oneItem: 'Cart, 1 items',
+  twoItems: 'Cart, 2 items',
+} as const;
+
 export const InvalidData = {
   incorrectPassword: 'IncorrectPw',
 } as const;
